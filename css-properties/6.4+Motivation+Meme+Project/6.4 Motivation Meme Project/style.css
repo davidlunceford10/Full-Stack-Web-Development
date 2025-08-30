@@ -1,0 +1,45 @@
+body {
+    background-color: black;
+}
+
+.libre-baskerville-regular {
+  font-family: "Libre Baskerville", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.libre-baskerville-bold {
+  font-family: "Libre Baskerville", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.libre-baskerville-regular-italic {
+  font-family: "Libre Baskerville", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+#yo-mama {
+    width: 50%;
+    margin-left: 25%;
+    color: white;
+    text-align: center;
+}
+
+#nacho-bro {
+    border: 10px solid white;
+    margin-top: 5%;
+    width: 100%;
+}
+
+#nacho-bro:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+h1 {
+  text-transform: uppercase; 
+}
+
+
