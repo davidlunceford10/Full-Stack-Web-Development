@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CSS Positioning — Quick Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#0f172a; --card:#111827; --ink:#e5e7eb; --muted:#9ca3af; --accent:#60a5fa; }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; }
+    .wrap { max-width: 920px; margin: 40px auto; padding: 0 20px; }
+    h1 { font-size: 2rem; margin: 0 0 8px; }
+    p.lead { color: var(--muted); margin: 0 0 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .card { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 16px; }
+    .card h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+    .card ul { margin: 0 0 12px 18px; }
+    pre { margin: 10px 0 0; background: #0b1220; border: 1px solid #1f2937; border-radius: 10px; padding: 12px; overflow:auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 0.95rem; }
+    .recap { margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 12px; }
+    .pill { background:#0b1220; border:1px solid #1f2937; border-radius:999px; padding:10px 14px; text-align:center; }
+    .tip { margin-top: 24px; font-size: 0.95rem; color: var(--muted); }
+    .example { margin-top: 30px; }
+    .example h3 { margin: 0 0 8px; }
+    .demo { display:flex; gap:16px; flex-wrap: wrap; }
+    .demo .box { width: 160px; height: 90px; background:#172554; border:1px solid #1f2937; border-radius:10px; position:relative; }
+    .demo .child { background:#334155; width: 80px; height: 40px; }
+    .label { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>CSS Positioning — Quick Guide</h1>
+    <p class="lead">Four core values you’ll use most: <strong>static</strong>, <strong>relative</strong>, <strong>absolute</strong>, and <strong>fixed</strong>.</p>
+
+    <section class="grid">
+      <article class="card">
+        <h2>1) <code>static</code> (default)</h2>
+        <ul>
+          <li>Element stays in normal document flow.</li>
+          <li><code>top/left/right/bottom</code> do nothing.</li>
+        </ul>
+        <pre><code>div {
+  position: static; /* default */
+}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>2) <code>relative</code></h2>
+        <ul>
+          <li>Like static, but you can nudge it.</li>
+          <li>Still takes up its original space.</li>
+        </ul>
+        <pre><code>.tag {
+  position: relative;
+  top: 10px;    /* moves down */
+  left: 20px;   /* moves right */
+}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>3) <code>absolute</code></h2>
+        <ul>
+          <li>Removed from normal flow.</li>
+          <li>Positions relative to the nearest <em>positioned</em> ancestor
+              (<code>relative/absolute/fixed</code>); otherwise the page.</li>
+        </ul>
+        <pre><code>.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>4) <code>fixed</code></h2>
+        <ul>
+          <li>Sticks to the viewport (browser window).</li>
+          <li>Doesn’t move when you scroll.</li>
+        </ul>
+        <pre><code>.fab {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+}</code></pre>
+      </article>
+    </section>
+
+    <section class="recap">
+      <div class="pill"><strong>static</strong> — normal flow, not movable</div>
+      <div class="pill"><strong>relative</strong> — in flow, can nudge</div>
+      <div class="pill"><strong>absolute</strong> — out of flow, inside nearest positioned ancestor</div>
+      <div class="pill"><strong>fixed</strong> — out of flow, stuck to viewport</div>
+    </section>
+
+    <p class="tip">Tip: To make an absolutely positioned child anchor to a parent, give the parent <code>position: relative;</code>.</p>
+
+    <section class="example">
+      <h3>Mini Examples</h3>
+      <div class="demo">
+        <div class="card" style="width:calc(50% - 8px); min-width:280px;">
+          <h2>Absolute inside a relative parent</h2>
+          <pre><code>.parent { position: relative; }
+.child  { position: absolute; top: 10px; right: 10px; }</code></pre>
+          <div class="box" style="background:#0b1220;">
+            <div class="child" style="position:absolute; top:10px; right:10px;"></div>
+          </div>
+          <div class="label">Gray square sits at top-right of the parent.</div>
+        </div>
+
+        <div class="card" style="width:calc(50% - 8px); min-width:280px;">
+          <h2>Relative “nudge”</h2>
+          <pre><code>.chip { position: relative; top: 8px; left: 12px; }</code></pre>
+          <div class="box">
+            <div class="child" style="position:relative; top:8px; left:12px;"></div>
+          </div>
+          <div class="label">Child moved, but its original space is still reserved.</div>
+        </div>
+
+        <div class="card" style="width:calc(50% - 8px); min-width:280px;">
+          <h2>Fixed button</h2>
+          <pre><code>.btn { position: fixed; bottom: 12px; right: 12px; }</code></pre>
+          <div class="label">Would stay put at the corner of the viewport while scrolling.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
