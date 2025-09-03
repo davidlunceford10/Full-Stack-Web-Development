@@ -1,0 +1,36 @@
+/* Don't change the existing CSS. */
+
+.box {
+  background-color: blue;
+  padding: 10px;
+}
+
+p {
+  color: yellow;
+  margin: 0;
+  padding: 0;
+}
+
+/* My Code */
+
+p {
+    color: yellow;
+}
+
+#outer-box {
+    background-color: purple;
+}
+
+/* Lesson here: If i put .inner-box before .box it would still be blue, the fact that inner-box comes after gives it higher priority. Also you can have two classes in one declaration, i.e. <div class="box inner-box"> box and inner-box are two classes that apply to the same element. They have the same specificity priority until you put them both in the stylesheet and have one come after the other. */
+.box {
+    background-color: blue;
+    padding: 10px;
+}
+
+.inner-box {
+    background-color: red;
+}
+
+.white-text {
+    color: white;
+}

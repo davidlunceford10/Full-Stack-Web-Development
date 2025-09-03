@@ -3,26 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HTML/CSS</title>
     <!-- Keep internal style tags in header. -->
     <style>
         html {
             background-color: aqua;
         }
     </style>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    <a href="google.com">Google</a>
+    <h2>Example link</h2>
+    <a href="https://www.google.com" target="_blank">Google</a>
     <!-- a is for anchor tag. -->
+
+    <br>
+    <br>
     <img src="" alt="">
     <!-- img tags are self closing, otherwise known as void elements. -->
 
     <!-- Font sizing: -->
+     <h2>Font/Asset Sizing</h2>
     <p id="pixel">1 Pixel is 1/96 of an Inch</p>
     <p id="point">1 Point is 1/72 of an Inch</p>
+
+    <p id="em">1em is 100% the size of the parent element</p>
+    <p id="rem">1rem is 100% the size of the root element</p>
+
+    <br>
+    <br>
+
+
+    <h1>CSS Specificity and Inheritance</h1>
+    <p>
+      <h2>The most specific always wins!</h2>
+      <img class="css-inheritance" src="./assets/images/css-inheritance+specificity-full.jpg" alt="">
+      <img class="css-inheritance" src="./assets/images/css-inheritance+specificity.jpg" alt="">
+      <img class="css-inheritance" src="./assets/images/css-inheritance+specificity-1.jpg" alt="">
+      <img class="css-inheritance" src="./assets/images/css-inheritance+specificity-2.jpg" alt="">
+    </p>
+
+    
     <footer>
-      <p id="em">1em is 100% the size of the parent element</p>
-      <p id="rem">1rem is 100% the size of the root element</p>
+      
+
     </footer>
   </body>
 </html>
