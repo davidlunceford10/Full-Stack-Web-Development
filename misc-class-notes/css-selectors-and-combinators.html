@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSS Selectors & Combinators – Pocket Guide</title>
+  <style>
+    :root{
+      --bg: #0f172a;           /* slate-900 */
+      --panel: #111827;        /* gray-900 */
+      --muted: #94a3b8;        /* slate-400 */
+      --text: #e5e7eb;         /* gray-200 */
+      --accent: #60a5fa;       /* blue-400 */
+      --accent-2: #22d3ee;     /* cyan-400 */
+      --ok: #34d399;           /* emerald-400 */
+      --warn: #fbbf24;         /* amber-400 */
+      --danger: #f87171;       /* red-400 */
+      --code: #0b1220;         /* deep slate */
+      --chip: #1f2937;         /* gray-800 */
+      --border: #334155;       /* slate-700 */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 10% -10%, rgba(96,165,250,.15), transparent 60%),
+                  radial-gradient(1000px 600px at 110% 0%, rgba(34,211,238,.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+    }
+    header{
+      position: sticky; top:0; z-index:10; backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(15,23,42,.85), rgba(15,23,42,.65));
+      border-bottom:1px solid var(--border);
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:24px}
+    h1{font-size: clamp(1.6rem, 2.5vw, 2.4rem); margin:0; letter-spacing:.3px}
+    h1 .chip{background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+    main{max-width:1100px; margin:0 auto; padding:28px 24px 120px}
+    section{background:rgba(17,24,39,.6); border:1px solid var(--border); border-radius:16px; padding:22px; margin:18px 0}
+    h2{font-size: clamp(1.2rem, 2vw, 1.6rem); margin:0 0 6px}
+    h3{font-size:1.05rem; margin:16px 0 8px}
+    p{color:var(--muted); line-height:1.6}
+    .grid{display:grid; gap:16px}
+    .cols-2{grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))}
+    code, pre{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    pre{background: var(--code); border:1px solid var(--border); padding:14px 16px; border-radius:12px; overflow:auto}
+    .kbd{display:inline-block; padding:2px 8px; border-radius:999px; background:var(--chip); border:1px solid var(--border); color:#cbd5e1}
+    .tip{border-left:4px solid var(--ok); padding-left:12px}
+    .warn{border-left:4px solid var(--warn); padding-left:12px}
+    .bad{border-left:4px solid var(--danger); padding-left:12px}
+    ul{margin:8px 0 8px 20px; color:var(--muted)}
+
+    /* Demo cards */
+    .demo{display:grid; grid-template-columns: 1fr; gap:10px}
+    .demo .preview{background:#0b1220; border:1px dashed #1f2a3a; border-radius:12px; padding:14px}
+    .demo .stage{padding:10px; border-radius:10px; background:#0e1626}
+    .demo .stage *{all:revert; font-family: system-ui, sans-serif}
+    .demo .legend{font-size:.9rem; color:#a5b4fc}
+
+    .quick-chip{display:inline-block; padding:6px 10px; border-radius:999px; background: #111827; border:1px solid var(--border); margin:4px 6px 0 0}
+
+    footer{color:var(--muted); text-align:center; padding:28px 0 64px}
+    .toc{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+    .toc a{color:#c7d2fe; text-decoration:none; border:1px solid var(--border); background:#0b1220; padding:8px 10px; border-radius:999px}
+    .toc a:hover{border-color:#3b82f6; color:#93c5fd}
+
+    /* Badge styles used in examples */
+    .badge{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; border:1px solid #334155; background:#0b1220}
+    .badge .dot{width:8px; height:8px; border-radius:50%; background: var(--accent)}
+
+    .note{font-size:.92rem; color:#cbd5e1}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>CSS <span class="chip">Selectors</span> & <span class="chip">Combinators</span> — Pocket Guide</h1>
+      <div class="toc">
+        <a href="#basics">Basics</a>
+        <a href="#attr">Attribute selectors</a>
+        <a href="#pseudo">Pseudo‑classes</a>
+        <a href="#pseudo-el">Pseudo‑elements</a>
+        <a href="#combinators">Combinators</a>
+        <a href="#group-chain">Grouping & chaining</a>
+        <a href="#lists">is/where/has/not</a>
+        <a href="#nth">nth‑patterns</a>
+        <a href="#specificity">Specificity</a>
+        <a href="#inherit">Inheritance</a>
+        <a href="#perf">Matching & perf</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="basics">
+      <h2>1) Basic selectors</h2>
+      <div class="grid cols-2">
+        <div>
+          <ul>
+            <li><b>Type</b>: <code>div</code>, <code>p</code></li>
+            <li><b>Class</b>: <code>.card</code></li>
+            <li><b>ID</b>: <code>#header</code></li>
+            <li><b>Universal</b>: <code>*</code> (use sparingly)</li>
+          </ul>
+          <pre><code>/* Examples */
+div { padding: 1rem; }
+.card { border-radius: 12px; }
+#header { position: sticky; top: 0; }
+* { box-sizing: border-box; }</code></pre>
+        </div>
+        <div class="demo">
+          <div class="legend">Live demo (basic)</div>
+          <div class="preview">
+            <div class="stage">
+              <div id="header" class="card"><span class="badge"><span class="dot"></span>Header</span></div>
+              <p>Paragraph text.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="attr">
+      <h2>2) Attribute selectors</h2>
+      <p>Target elements by attribute/value. Super useful for forms, ARIA, data‑attrs, and links.</p>
+      <div class="grid cols-2">
+        <div>
+          <pre><code>[disabled] { opacity: .5 }
+input[type="email"] { border-color: #60a5fa }
+[href^="https://"]::after { content: " ↗" }
+[href$=".pdf"] { color: #f87171 }
+[data-role~="admin"] { font-weight: 700 }
+[lang|="en"] { font-style: italic }</code></pre>
+          <ul>
+            <li><code>[attr]</code> has attribute</li>
+            <li><code>[attr="val"]</code> exact match</li>
+            <li><code>^=</code> starts with, <code>$=</code> ends with, <code>*=</code> contains</li>
+            <li><code>~=</code> contains <i>word</i>; <code>|=</code> value or value-<i>prefix</i></li>
+          </ul>
+        </div>
+        <div class="demo">
+          <div class="legend">Live demo (attributes)</div>
+          <div class="preview">
+            <div class="stage">
+              <a href="https://example.com">Secure link</a>
+              <a href="/files/guide.pdf">PDF link</a>
+              <button disabled>Disabled button</button>
+              <div data-role="user admin">Admin chip</div>
+              <p lang="en-US">English paragraph</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pseudo">
+      <h2>3) Pseudo‑classes (state + structure)</h2>
+      <div class="grid cols-2">
+        <div>
+          <pre><code>a:link, a:visited, a:hover, a:active { /* LVHA order */ }
+input:focus { outline: 2px solid var(--accent) }
+button:disabled { opacity: .5; cursor: not-allowed }
+li:first-child { margin-top: 0 }
+li:last-child { margin-bottom: 0 }
+li:nth-child(odd) { background: #0b1220 }
+li:is(.active, :hover) { color: #60a5fa }</code></pre>
+          <p class="note">Structural pseudo‑classes like <code>:first-child</code>, <code>:nth-child()</code> depend on the element’s position in the DOM, not classes.</p>
+        </div>
+        <div class="demo">
+          <div class="legend">Live demo (pseudo‑classes)</div>
+          <div class="preview">
+            <div class="stage">
+              <a href="#">Hover me</a>
+              <input placeholder="Focus me" />
+              <button disabled>Disabled</button>
+              <ul>
+                <li>One</li>
+                <li>Two</li>
+                <li>Three</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pseudo-el">
+      <h2>4) Pseudo‑elements (virtual elements)</h2>
+      <div class="grid cols-2">
+        <div>
+          <pre><code>p::first-line { font-variant: small-caps }
+p::first-letter { font-size: 180% }
+button::before { content: "★"; margin-right: .4rem }
+.card::after { content: ""; display:block; height:1px; background: #334155 }</code></pre>
+          <p>These create virtual boxes you can style, often for decoration or generated content.</p>
+        </div>
+        <div class="demo">
+          <div class="legend">Live demo (pseudo‑elements)</div>
+          <div class="preview">
+            <div class="stage">
+              <p>First line and first letter demo paragraph with some more words.</p>
+              <button>Button</button>
+              <div class="card" style="padding:8px 0">Card</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="combinators">
+      <h2>5) Combinators (relationships)</h2>
+      <div class="grid cols-2">
+        <div>
+          <pre><code>/* Descendant: B anywhere inside A */
+A B { }
+
+/* Child: B directly inside A */
+A > B { }
+
+/* Adjacent sibling: B right after A */
+A + B { }
+
+/* General sibling: any B after A */
+A ~ B { }</code></pre>
+          <div class="tip"><b>Mental model:</b> spaces/angles connect ancestors → children; plus/tilde connect siblings. Use direct children (<code>&gt;</code>) for precision.
+          </div>
+          <div class="bad" style="margin-top:10px"><b>Gotcha:</b> <code>.flag div</code> selects <i>all</i> descendant <code>div</code>s. To select the next sibling <code>div</code> after <code>.flag</code>, use <code>.flag + div</code>.</div>
+        </div>
+        <div class="demo">
+          <div class="legend">Live demo (combinators)</div>
+          <div class="preview">
+            <div class="stage" id="combi-demo">
+              <h4>Title</h4>
+              <p>Paragraph after title</p>
+              <p>Another paragraph</p>
+              <div class="box">
+                <p>Inside box</p>
+                <span>Child span</span>
+              </div>
+              <span>Sibling span</span>
+            </div>
+          </div>
+          <pre><code>/* Try these in DevTools: */
+#combi-demo h4 + p { color: purple }
+#combi-demo .box > span { color: dodgerblue }
+#combi-demo .box p { font-weight: 700 }
+#combi-demo h4 ~ p { opacity: .8 }</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="group-chain">
+      <h2>6) Grouping vs chaining</h2>
+      <div class="grid cols-2">
+        <div>
+          <h3>Grouping (comma = OR)</h3>
+          <pre><code>h1, h2, h3 { font-family: system-ui }</code></pre>
+          <h3>Chaining (no comma = AND)</h3>
+          <pre><code>button.primary:hover { transform: translateY(-1px) }
+.card.highlight[aria-live="polite"] { outline: 2px solid var(--accent) }</code></pre>
+          <p class="note">Chaining increases specificity; prefer utility classes when possible.</p>
+        </div>
+        <div>
+          <span class="quick-chip">Grouping = apply to many</span>
+          <span class="quick-chip">Chaining = refine one</span>
+          <span class="quick-chip">Prefer short, class‑based selectors</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="lists">
+      <h2>7) Power selectors: <code>:is()</code>, <code>:where()</code>, <code>:has()</code>, <code>:not()</code></h2>
+      <div class="grid cols-2">
+        <div>
+          <pre><code>/* :is(list) → matches any in the list; carries list specificity */
+nav :is(a, button){ text-decoration: none }
+
+/* :where(list) → like :is but zero specificity (great for resets) */
+:where(h1,h2,h3,h4){ margin: 0 }
+
+/* :not(selector) → negate a selector */
+button:not(.primary){ opacity: .8 }
+
+/* :has(rel) → parent-level queries (supported modern browsers) */
+.card:has(img){ padding-top: 0 }
+
+/* Combine with combinators */
+article:has(> h2 + p){ border-top: 2px solid var(--accent) }</code></pre>
+          <div class="warn"><b>Specificity tip:</b> <code>:where()</code> contributes 0 specificity; <code>:is()</code> contributes the max of its arguments; <code>:not()</code> takes the specificity of what’s inside.</div>
+        </div>
+        <div class="demo">
+          <div class="legend">Live demo (:is/:where/:has/:not)</div>
+          <div class="preview">
+            <div class="stage" id="power-demo">
+              <nav>
+                <a href="#">Home</a>
+                <button>Go</button>
+              </nav>
+              <article class="card"><img alt="" src="" style="display:none"/>Text only</article>
+              <article class="card"><img alt="" src="" style="display:block; width:40px; height:40px; background:#ddd"/>With image</article>
+              <button>Plain</button>
+              <button class="primary">Primary</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="nth">
+      <h2>8) Patterns with <code>:nth-*</code></h2>
+      <div class="grid cols-2">
+        <div>
+          <pre><code>/* Basic */
+li:nth-child(odd) { background: #0b1220 }
+li:nth-child(3n) { color: #60a5fa }     /* every 3rd */
+li:nth-child(3n + 1) { font-weight: 600 }
+
+/* Of-type (ignores other tag names) */
+.card p:nth-of-type(2) { color: #22d3ee }
+
+/* Last variants */
+li:nth-last-child(2) { text-decoration: underline }</code></pre>
+          <p class="note"><code>:nth-child()</code> counts among <i>all</i> siblings; <code>:nth-of-type()</code> counts only the same tag.</p>
+        </div>
+        <div class="demo">
+          <div class="legend">Live demo (nth‑patterns)</div>
+          <div class="preview">
+            <div class="stage" id="nth-demo">
+              <ul>
+                <li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li>
+              </ul>
+              <div class="card">
+                <p>A</p><span>Ignored</span><p>B</p><p>C</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="specificity">
+      <h2>9) Specificity cheat‑sheet</h2>
+      <div class="grid cols-2">
+        <div>
+          <ul>
+            <li>Inline styles <span class="kbd">style="…"</span> → strongest</li>
+            <li>IDs <span class="kbd">#id</span></li>
+            <li>Classes/attributes/pseudo‑classes <span class="kbd">.class</span> <span class="kbd">[attr]</span> <span class="kbd">:hover</span></li>
+            <li>Elements/pseudo‑elements <span class="kbd">div</span> <span class="kbd">::before</span></li>
+            <li>Universal/inherited/browser defaults → weakest</li>
+          </ul>
+          <pre><code>/* Higher score wins; later wins on tie */
+#panel .btn.primary { }
+.btn.primary { }           /* loses to the above */
+
+/* !important breaks the tie-breaker; use sparingly */
+.alert { color: red !important }</code></pre>
+          <div class="warn"><b>Tip:</b> Keep selectors short and class‑based. If you need <code>!important</code> often, revisit your cascade.</div>
+        </div>
+        <div>
+          <div class="quick-chip">Write L→R, matched R→L</div>
+          <div class="quick-chip">Later rules override on equal specificity</div>
+          <div class="quick-chip">Selector lists: specificity is per‑selector</div>
+          <div class="quick-chip">:where() adds 0; :is() takes max</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="inherit">
+      <h2>10) Inheritance</h2>
+      <div class="grid cols-2">
+        <div>
+          <pre><code>body { color: #e5e7eb; font-family: system-ui }
+/* Inherited: color, font, line-height */
+/* Not inherited: margin, padding, border, background */
+
+p { background: yellow }          /* not inherited */
+span { background: inherit }      /* force inherit */
+
+/* Control keywords */
+h1 { all: unset }         /* reset almost everything */
+.box { border: initial }  /* UA default */
+.small { font-size: revert } /* to author/UA default */
+</code></pre>
+        </div>
+        <div>
+          <p class="tip"><b>Remember:</b> the cascade resolves conflicts using origin (author vs UA), importance (<code>!important</code>), specificity, and source order — in that order.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="perf">
+      <h2>11) Matching direction & performance</h2>
+      <div class="grid cols-2">
+        <div>
+          <ul>
+            <li>Browsers <b>match selectors right‑to‑left</b>: find the rightmost target, then verify ancestors/siblings.</li>
+            <li>Prefer short, class‑based selectors (<code>.btn</code>, <code>.card &gt; .title</code>).</li>
+            <li>Don’t over‑qualify (<code>div.card</code> when <code>.card</code> is enough).</li>
+            <li>Use <code>:where()</code> for zero‑specificity resets.</li>
+            <li>Test selectors in DevTools: <span class="kbd">Elements → :hov / :has()</span>.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="quick-chip">Avoid long descendant chains</div>
+          <div class="quick-chip">Use children combinator for precision</div>
+          <div class="quick-chip">Componentize with BEM/utility classes</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Made for your notes. Copy into your course repo and tweak freely. ✨
+    </footer>
+
+    <script>
+      /* Minimal progressive enhancement for demo states */
+      (function(){
+        const style = document.createElement('style');
+        style.textContent = `
+          /* attribute demo styles */
+          [href^="https://"]::after { content: " ↗" }
+          [href$=".pdf"] { color: #f87171 }
+          [disabled] { opacity:.5 }
+          [data-role~="admin"] { font-weight:700 }
+          [lang|="en"] { font-style:italic }
+
+          /* pseudo-classes */
+          a:hover { color: #60a5fa }
+          input:focus { outline:2px solid #60a5fa; outline-offset:2px }
+          button:disabled { cursor:not-allowed }
+          ul li:nth-child(odd){ background:#eef2ff }
+
+          /* pseudo-elements */
+          p::first-line { font-variant: small-caps }
+          p::first-letter { font-size: 180% }
+          button::before { content:"★"; margin-right:.4rem }
+          .card::after { content:""; display:block; height:1px; background:#e5e7eb; opacity:.25; margin-top:6px }
+
+          /* power selectors */
+          nav :is(a, button){ text-decoration:none }
+          :where(h1,h2,h3,h4){ margin: 0 }
+          button:not(.primary){ opacity:.85 }
+          .card:has(img[style*="display:block"]){ padding-top: 0; background:#fafafa }
+
+          /* combinator demo */
+          #combi-demo h4 + p { color: #a78bfa }
+          #combi-demo .box > span { color: #60a5fa }
+          #combi-demo .box p { font-weight:700 }
+          #combi-demo h4 ~ p { opacity:.85 }
+
+          /* nth demo */
+          #nth-demo .card p:nth-of-type(2){ color:#06b6d4 }
+          #nth-demo ul li:nth-last-child(2){ text-decoration: underline }
+        `;
+        document.head.appendChild(style);
+      })();
+    </script>
+  </main>
+</body>
+</html>

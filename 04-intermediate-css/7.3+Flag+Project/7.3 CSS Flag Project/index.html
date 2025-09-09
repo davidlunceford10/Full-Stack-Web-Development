@@ -13,12 +13,39 @@
       position: relative;
     }
 
-    div.flag {
-      background-color: blue; 
+    div:nth-child(2) {     
+      background-color: blue;   
       height: 300px;
       position: relative;
       top: 150px;
     
+    } 
+    
+    div.flag > p {
+      color: white;
+      position: absolute;
+      left: 33%;
+      font-size: 65pt;
+      bottom: 70%;
+    }
+
+    div > div > div {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-color: white;
+      left: 350px;  
+      top: 15%; 
+    }
+
+    div > div > p {
+      position: relative;
+      font-size: 60pt;
+      text-align: center;
+      bottom: 75px;
+      width: 200px;
+      height: 200px;
     }
     
   </style>
