@@ -9,5 +9,8 @@ body {
     margin-left: 10%;
 }
 
+p, li, ul, a {
+    font-size: 2rem;
+}
 
 
