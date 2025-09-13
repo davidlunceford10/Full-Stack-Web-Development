@@ -45,7 +45,11 @@ body > div > div.right.card > img {
 } 
 
 
-@media ()
+@media (max-width: 480px) {
+  body > div > img {
+    width: 200px;
+  }
+}
 
 
 
