@@ -1,0 +1,25 @@
+/* Write your code here: */
+
+h1, h2 {
+    color: blueviolet;
+}
+
+/* direct child selector */
+.box > p {
+    color: firebrick;
+}
+
+/* descendant selector, apply to a descendant of left side. a descendant is an element that is contained in a parent element. */
+.box li {
+    color: blue;
+}
+
+/* chaining = apply where ALL selectors are true. put generic elements before id's and classes so they don't look like one weird class/id name to CSS.  */
+li.done {
+    color: seagreen;
+}
+
+/*combining combiners, pretty self explanatory */
+ul p.done {
+    font-size: .5rem;
+}
