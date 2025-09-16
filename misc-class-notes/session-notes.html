@@ -85,6 +85,148 @@
       </ul>
     </p>
     <a href="http://appbrewery.github.io/css-display/" target="_blank">Great Visual for Display Elements</a>
+    <br>
+    <br>
+    <h1>Flexbox</h1>
+    <p>
+      The container element contains the child elements that are used in the flexbox. <br>display: flex; designates the container element as a flexbox container. <br>flex-direction: column or row designates whether the items are aligned along the main axis horizontally, or the cross axis vertically. If you change flex-direction to row, or leave it blank, it will align items horizontally either by row or by default. If you choose column it will switch the main axis to vertical and align everything vertically. <br>
+      'justify-content: ' aligns things along the main axis. 'align-items' aligns things along the cross axis. <br>
+      <br>
+      'flex-wrap: wrap' makes it so the items in the container don't crush each other on one line, but instead will fill the next line and the next, etc. If you choose flex-wrap: wrap, you enable 'align-content: ' which allows you to align items along the cross axis. align-content has most of the same values as align-items. You can also use 'gap: ' to add space between all the items in the container. The gap property in CSS is used to control spacing between items in a container — but it only works with flexbox, grid, and multi-column layouts <br><br>
+      Flexgrow: <br>
+    
+      flex-grow tells a flex item how much it should grow compared to its siblings when extra space is available in a flex container.<br>
+
+      Default: 0 → item won’t grow.<br>
+
+      Higher number: grows more than items with a lower number.<br>
+
+      Equal numbers: items share leftover space evenly.<br>
+
+
+      <br>
+      <br>
+      The flex property is a shorthand in CSS for three things:<br>
+
+        flex: flex-grow flex-shrink flex-basis;<br>
+
+
+        flex-grow → how much the item grows when space is available<br>
+
+        flex-shrink → how much the item shrinks when space is tight<br>
+
+        flex-basis → the item’s starting size (before growing/shrinking)<br>
+
+        Example:<br>
+
+        .item {<br>
+          flex: 1 1 200px;<br>
+        }<br>
+
+
+        Grow = 1 (can expand)<br>
+
+        Shrink = 1 (can shrink)<br>
+
+        Basis = 200px (starts at 200px wide)<br>
+
+        👉 If you just write flex: 1;, it means flex: 1 1 0; (item will grow and shrink equally, starting at 0 size).<br>
+
+
+        <br><br>'order: ' is used to order elements from start to finish. Look it up for more info.
+
+
+        <h1>Grid</h1><br><br>
+        <p>Example Grid: (Look in actual HTML notes) </p>
+        <style>
+          .container {
+            display: grid;
+            grid-template-rows: 100px 100px 100px;
+            grid-template-rows: 100px 100px 100px;
+          }
+
+          /* full syntax layout */
+          .item-1 {
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column-start: 1;
+            grid-column-end: 5;
+          }
+
+          /* */
+
+          /*shorthand syntax */
+          .item-1 {
+            grid-row: 1 / 3; /*1 is starting line, 3 is ending line for rows. */
+            grid-column: 1 /5 ; /*1 is starting line, 5 is ending line for columns. */
+          }
+
+
+          .item-1 {
+            grid-row: span 2;/*From wherever you are, take two cells.*/
+            grid-column: span 2 ; 
+          }
+
+          /* BEST SHORTHAND FOR GRID ELEMENTS */
+          
+          .item-1 {
+            grid-area: row-start col-start row-end col-end; /* These are the values */
+            grid-area: 3 / 1 / -1 / -1; /* you can use positive or negative values that are present in your grid. */
+
+          }
+
+          /* z-index is used to layer elements on top of other elements. Example:*/
+
+          .item-1 {
+            z-index: 1;
+          }
+
+        </style>
+
+        <p>Items that fall out of the explicitly defined grid fall into the implicit grid. Implicit grid elements don't inherit any of the values from the explicit grid. <br><br> 'grid-auto-rows: 100px' defines the size of rows that get added on in the implicit grid. 
+         <br>'grid-auto-flow: column' changes from adding new rows to adding new columns. 
+        <br>grid-auto-columns: 100px' defines the size for each new column that gets added. 
+        <br><br>
+        By the way, you can mix different types of units together, i.e. 1rem 2em 3fr.
+         
+        REPEAT() and MINMAX() functions (These can be used for any attribute value, and they can be nested too.)<br>
+        .container { <br>
+          display: grid; <br>
+           grid-template-rows: repeat(2, 100px); The repeat function takes two values, how many times you want the value to be repeated, and the second value is the value you want to be repeated.<br>
+           grid-template-columns: 100px minmax(100px 3fr) 1fr; Minmax function is used to set the minium size and maximum size of an item in a grid cell.  
+        } <br>
+
+
+        GRID GAP: <br>
+        grid-gap: 1rem 2rem, the first value is for rows and the second value is for columns. 
+        </p>
+        <br><br>
+        <h1>Really good shorthand for grid:</h1>
+        <img src="./assets/images/grid-ultimate-shorthand.png" alt="yeeeeeeeeeeeeee">
+
+
+        <h1>REMEMBER</h1><br>
+        <p>
+          both justify-items and align-items have a default value of stretch. 
+
+        
+        </p>
+
+
+        <h1>justify-self</h1>
+        <br>This allows you to align a single item on the main axis within a cell on a grid.
+        <br>align-self allows you to do the same but on the cross axis. 
+    
+        <br>
+        <br>
+        <h1>justify-content and align-content values:</h1>
+        <br>start, end, center, baseline, space-between, space-around, and space-evenly. 
+    
+        <br><h1>THE SHANGRI-LA of RESPONSIVENESS!!!!</h1>
+        <br>Use 'repeat(auto-fit, minmax(100px, 1fr))' 
+        <br>auto-fit is best used with minmax to determine minimum and maximum sizes for elements in cells. 
+    
+      </p>
 
     <footer>
     </footer>
